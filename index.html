@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio | 运营创意作品集</title>
+    <style>
+        :root {
+            --bg-color: #FFFDFB;       /* 米白背景 */
+            --main-text: #2E2E2E;      /* 主文字 */
+            --sub-text: #8A8A8A;       /* 次文字 */
+            --primary-color: #F3A6A0;  /* 杏粉主色 */
+            --accent-color: #FFD6D2;   /* 点缀色 */
+            --glass: rgba(255, 255, 255, 0.85);
+            --card-shadow: 0 10px 20px rgba(243, 166, 160, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        body { font-family: "PingFang SC", "Microsoft YaHei", sans-serif; background-color: var(--bg-color); color: var(--main-text); line-height: 1.6; }
+
+        /* 导航栏 */
+        nav {
+            padding: 1.2rem 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            position: fixed; top: 0; width: 100%;
+            background: var(--glass); backdrop-filter: blur(10px);
+            z-index: 1000; border-bottom: 1px solid rgba(243, 166, 160, 0.2);
+        }
+        .logo { font-weight: 900; color: var(--primary-color); letter-spacing: 1px; }
+        .nav-links a { text-decoration: none; color: var(--main-text); margin-left: 20px; font-size: 0.9rem; font-weight: 500; transition: 0.3s; }
+        .nav-links a:hover { color: var(--primary-color); }
+
+        /* 核心布局容器 */
+        .container { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            padding: 0 40px; 
+            width: 100%;
+        }
+
+        section { padding: 100px 0; border-bottom: 1px solid rgba(0,0,0,0.03); width: 100%; clear: both; }
+        .section-header { margin-bottom: 50px; }
+        .section-header h2 { font-size: 2.2rem; position: relative; display: inline-block; }
+        .section-header h2::after { content: ''; position: absolute; bottom: -8px; left: 0; width: 40px; height: 4px; background: var(--primary-color); border-radius: 2px; }
+
+        /* 关于我 Hero */
+        .about-hero {
+            position: relative; min-height: 85vh; display: flex; align-items: center;
+            background: linear-gradient(rgba(255,253,251,0.6), rgba(255,253,251,0.6)), 
+                        url('https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?auto=format&fit=crop&q=80&w=2000');
+            background-size: cover; background-position: center; background-attachment: fixed;
+            padding-top: 80px;
+        }
+        .about-card {
+            background: var(--glass); padding: 45px; border-radius: 30px;
+            max-width: 950px; display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+            margin: 0 auto;
+        }
+        .photo-stack { display: flex; gap: 12px; margin-bottom: 25px; }
+        .photo-stack img { width: 90px; height: 120px; border-radius: 12px; object-fit: cover; border: 3px solid #fff; box-shadow: 0 5px 10px rgba(0,0,0,0.1); }
+
+        /* 文案 3x3 网格 */
+        .copy-grid {
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); /* 强制三列 */
+            gap: 30px; 
+            width: 100%;
+        }
+        .copy-card {
+            background: #fff; border-radius: 18px; overflow: hidden; border: 1px solid #f2f2f2; transition: 0.3s;
+            display: flex; flex-direction: column;
+        }
+        .copy-card:hover { transform: translateY(-5px); box-shadow: var(--card-shadow); }
+        .copy-img-container {
+            width: 100%; height: 420px;
+            overflow-y: auto; overflow-x: hidden;
+            background: #f9f9f9; cursor: ns-resize;
+        }
+        .copy-img-container::-webkit-scrollbar { width: 4px; }
+        .copy-img-container::-webkit-scrollbar-thumb { background: var(--accent-color); border-radius: 10px; }
+        .copy-img { width: 100%; height: auto; display: block; }
+        .copy-info { padding: 18px; }
+        .tag { font-size: 0.75rem; color: var(--primary-color); font-weight: 700; margin-bottom: 8px; display: block; }
+
+        /* Instagram 独立网格及文字卡片样式 */
+        .insta-module-wrapper { width: 100%; margin: 60px 0; clear: both; }
+        .insta-module-title { font-size: 1.1rem; border-left: 4px solid var(--primary-color); padding-left: 15px; margin-bottom: 25px; }
+        .insta-custom-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+        .insta-custom-card { aspect-ratio: 1/1; border-radius: 15px; overflow: hidden; background: #f5f5f5; transition: 0.3s; position: relative; }
+        .insta-custom-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.3s; }
+        
+        /* 针对纯文字 IG 作品的特殊排版 */
+        .insta-text-card {
+            background: linear-gradient(135deg, #fff5f4 0%, #ffffff 100%);
+            display: flex; flex-direction: column; justify-content: center;
+            align-items: center; padding: 20px; text-align: center;
+            border: 1px solid var(--accent-color);
+        }
+        .insta-text-card::before {
+            content: '"'; font-family: serif; font-size: 2.5rem; color: var(--primary-color);
+            opacity: 0.3; line-height: 1; margin-bottom: -5px;
+        }
+        .insta-text-content {
+            font-size: 0.85rem; color: var(--main-text); font-weight: 500; line-height: 1.5;
+            display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;
+        }
+
+        /* 脚本卡片样式 */
+        .script-card { background: #fdfaf7; border: 1px dashed var(--primary-color); }
+        .script-content { font-size: 0.85rem; color: var(--sub-text); line-height: 1.8; margin-top: 10px; padding: 15px; background: #fff; border-radius: 10px; }
+
+        /* 灵感墙 */
+        .inspiration-wall { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 25px; }
+        .quote-post { background: #fff; padding: 20px; border-radius: 8px; border: 1px solid #eee; box-shadow: 4px 4px 0px var(--accent-color); font-size: 0.9rem; }
+
+        /* 设计展示 */
+        .style-header { border-left: 5px solid var(--primary-color); padding-left: 20px; margin-bottom: 25px; }
+        .design-gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+        .design-img-placeholder { aspect-ratio: 4/5; background: #eee; border-radius: 12px; }
+
+        /* 视频展示 */
+        .video-item { display: grid; grid-template-columns: 1.3fr 1fr; gap: 40px; align-items: center; }
+        .video-box { width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 24px; overflow: hidden; }
+
+        /* 页脚 */
+        .contact-footer { background: var(--primary-color); border-radius: 50px; padding: 80px 40px; text-align: center; color: white; margin-bottom: 40px; }
+        .contact-btn { display: inline-block; padding: 12px 35px; background: white; color: var(--primary-color); text-decoration: none; border-radius: 30px; font-weight: bold; margin: 10px; }
+        .top-btn { position: fixed; bottom: 30px; right: 30px; width: 45px; height: 45px; background: var(--primary-color); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; z-index: 999; }
+
+        /* 响应式断点 */
+        @media (max-width: 992px) {
+            .copy-grid { grid-template-columns: repeat(2, 1fr); }
+            .about-card { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            .container { padding: 0 20px; }
+            .copy-grid, .design-gallery, .video-item { grid-template-columns: 1fr; }
+            .insta-custom-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        
+        /* --- 品牌深度案例专属样式 --- */
+        .brand-group {
+            margin-bottom: 80px; 
+            padding: 30px;
+            background: rgba(243, 166, 160, 0.03); 
+            border-radius: 25px;
+        }
+
+        .brand-info-header {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--accent-color);
+        }
+
+        .brand-main-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: block;
+            letter-spacing: 1px;
+        }
+
+        .brand-main-desc {
+            font-size: 0.95rem;
+            color: var(--main-text);
+            margin-top: 8px;
+            max-width: 800px;
+            line-height: 1.6;
+        }
+
+        .brand-case-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 20px;
+        }
+
+        .brand-case-item {
+            background: #fff;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid #f0f0f0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        }
+
+        .brand-case-scroll {
+            width: 100%;
+            height: 400px; 
+            overflow-y: auto;
+            cursor: ns-resize;
+        }
+        .brand-case-scroll img { width: 100%; height: auto; display: block; }
+        .brand-case-scroll::-webkit-scrollbar { width: 4px; }
+        .brand-case-scroll::-webkit-scrollbar-thumb { background: var(--accent-color); border-radius: 10px; }
+
+        @media (max-width: 768px) {
+            .brand-case-grid { grid-template-columns: 1fr; } 
+        }
+        
+        /* 让每个设计风格区块之间保持间距 */
+        .style-block {
+            margin-bottom: 60px; 
+        }
+
+        /* 最后一个区块不需要底边距 */
+        .style-block:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">PORTFOLIO.</div>
+        <div class="nav-links">
+            <a href="#about">关于我</a>
+            <a href="#copy">文案作品</a>
+            <a href="#design">设计作品</a>
+            <a href="#video">视频作品</a>
+            <a href="#contact">联系我</a>
+        </div>
+    </nav>
+
+    <header id="about" class="about-hero">
+        <div class="container">
+            <div class="about-card">
+                <div>
+                    <div class="photo-stack">
+                        <img src="WechatIMG3498.jpeg" alt="Life">
+                        <img src="your-photo-2.jpg" alt="Work">
+                        <img src="your-photo-3.jpg" alt="Creative">
+                    </div>
+                    <h1>Hi！This is Yutian(Annie)</h1>
+                    <p style="margin: 15px 0; color: #555;">数字营销不止于流量，而在于连接</p>
+                    <p style="color: #666; font-size: 0.95rem;">作为文案与数字营销人，我擅长将数据转化为动人的故事。我累计完成300+跨行业文案项目，并为品牌在小红书创造单篇600+点赞的高互动内容。</p>
+                </div>
+                <div style="background: rgba(243,166,160,0.05); padding: 25px; border-radius: 20px;">
+                    <h4 style="color: var(--primary-color); margin-bottom: 12px;">SKILLS & CERTS</h4>
+                    <ul style="list-style: none; font-size: 0.88rem; line-height: 1.8; color: #666;">
+                        <li>✔ <strong>Technical:</strong> SEO & SEM, Google Ads, Adobe Creative Suite</li>
+                        <li>✔ <strong>Languages:</strong> English (Fluent), Mandarin (Native)</li>
+                        <li>✔ <strong>Platform:</strong> RED, Instagram, Linkedin, Wechat</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <section id="copy">
+            <div class="section-header">
+                <h2>COPYWRITING</h2>
+                <p style="color: var(--sub-text); margin-top: 10px;">长图案例支持手动滚动阅读。</p>
+            </div>
+
+            <div class="copy-grid">
+                <div class="copy-card">
+                    <div class="copy-img-container"><img src="医美护肤安利.PNG" class="copy-img"></div>
+                    <div class="copy-info"><span class="tag">小红书 | 医美护肤</span><p>品牌视觉笔记案例</p></div>
+                </div>
+                <div class="copy-card">
+                    <div class="copy-img-container"><img src="教育私立学校.PNG" class="copy-img"></div>
+                    <div class="copy-info"><span class="tag">小红书 | 教育</span><p>私立学校品牌介绍</p></div>
+                </div>
+                <div class="copy-card">
+                    <div class="copy-img-container"><img src="生活服务diy.PNG" class="copy-img"></div>
+                    <div class="copy-info"><span class="tag">小红书 | 生活方式</span><p>活动策划推广</p></div>
+                </div>
+                <div class="copy-card">
+                    <div class="copy-img-container"><img src="医美护肤spa1.PNG" class="copy-img"></div>
+                    <div class="copy-info"><span class="tag">小红书 | 医美护肤</span><p>高端SPA探店文案</p></div>
+                </div>
+                <div class="copy-card">
+                    <div class="copy-img-container"><img src="教育人设故事.PNG" class="copy-img"></div>
+                    <div class="copy-info"><span class="tag">小红书 | 教育</span><p>名师人设打造案例</p></div>
+                </div>
+                <div class="copy-card">
+                    <div class="copy-img-container"><img src="教育移民项目.PNG" class="copy-img"></div>
+                    <div class="copy-info"><span class="tag">小红书 | 移民教育</span><p>科普类内容策划</p></div>
+                </div>
+                <div class="copy-card">
+                    <div class="copy-img-container"><img src="医美护肤身材管理.PNG" class="copy-img"></div>
+                    <div class="copy-info"><span class="tag">小红书 | 医美护肤</span><p>身材管理方案推广</p></div>
+                </div>
+                <div class="copy-card">
+                    <div class="copy-img-container"><img src="活动宣传.PNG" class="copy-img"></div>
+                    <div class="copy-info"><span class="tag">小红书 | 活动宣传</span><p>品牌线下活动预热</p></div>
+                </div>
+                <div class="copy-card">
+                    <div class="copy-img-container"><img src="生活服务618.PNG" class="copy-img"></div>
+                    <div class="copy-info"><span class="tag">小红书 | 活动策划</span><p>618 大促运营文案</p></div>
+                </div>
+            </div>
+
+            <div class="brand-section" style="margin-top: 60px;">
+                <h3 class="insta-module-title" style="margin-bottom: 40px;">BRAND CASE STUDY / 品牌案例深耕</h3>
+
+                <div class="brand-group">
+                    <div class="brand-info-header">
+                        <span class="brand-main-name">Mannatech 泰富</span>
+                        <p class="brand-main-desc">
+                            针对大健康产业的深度运营，通过“糖营养”科普与真实反馈构建品牌信任护城河。
+                            主要负责：小红书矩阵运营、私域素材输出及节日大促策划。
+                        </p>
+                    </div>
+                    <div class="brand-case-grid">
+                        <div class="brand-case-item">
+                            <div class="brand-case-scroll"><img src="manna1.PNG"></div>
+                        </div>
+                        <div class="brand-case-item">
+                            <div class="brand-case-scroll"><img src="manna2.PNG"></div>
+                        </div>
+                        <div class="brand-case-item">
+                            <div class="brand-case-scroll"><img src="manna3.PNG"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="brand-group">
+                    <div class="brand-info-header">
+                        <span class="brand-main-name">某高端教育移民机构</span>
+                        <p class="brand-main-desc">
+                            聚焦高净值人群需求，将枯燥的政策条文转化为具有情感共鸣的人设故事。
+                            主要负责：品牌小红书全案策划、高赞引流笔记及垂直社群内容运营。
+                        </p>
+                    </div>
+                    <div class="brand-case-grid">
+                        <div class="brand-case-item">
+                            <div class="brand-case-scroll"><img src="edu1.PNG"></div>
+                        </div>
+                        <div class="brand-case-item">
+                            <div class="brand-case-scroll"><img src="edu2.PNG"></div>
+                        </div>
+                        <div class="brand-case-item">
+                            <div class="brand-case-scroll"><img src="edu3.PNG"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                
+            <div class="insta-module-wrapper">
+                <h3 class="insta-module-title">Instagram 作品展示</h3>
+                <div class="insta-custom-grid">
+                    <div class="insta-custom-card"><img src="活动 illuminate.jpg"></div>
+                    
+                    <div class="insta-custom-card insta-text-card">
+                        <div class="insta-text-content">好的内容营销不只是推销产品，而是为用户提供价值，在潜移默化中建立品牌心智。</div>
+                    </div>
+                    
+                    <div class="insta-custom-card insta-text-card">
+                        <div class="insta-text-content">从数据中洞察人性，从创意中触达情感。每一篇爆款背后的底层逻辑都是对需求的深刻理解。</div>
+                    </div>
+                    
+                    <div class="insta-custom-card"><img src="pic4.jpg"></div>
+                </div>
+            </div>
+
+            <div style="margin-top: 50px;">
+                <h3 class="insta-module-title">短视频脚本展示</h3>
+                <div class="copy-grid">
+                    <div class="copy-card script-card">
+                        <div class="copy-info">
+                            <span class="tag">脚本 | Healthcare</span>
+                            <div class="script-content">“没空健身，不想体检，身体却很好? Ambrotose Life，一键开启健康保卫战...”</div>
+                        </div>
+                    </div>
+                    <div class="copy-card script-card">
+                        <div class="copy-info">
+                            <span class="tag">脚本 | Healthcare</span>
+                            <div class="script-content">“Mannatech采用最先进的糖营养概念，只出品高品质的营养补充剂...”</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 50px;">
+                <h3 class="insta-module-title">灵感墙</h3>
+                <div class="inspiration-wall">
+                    <div class="quote-post"><p>“运营的本质是人与人之间的深度连接。”</p></div>
+                    <div class="quote-post"><p>“好的内容自己会走路。”</p></div>
+                    <div class="quote-post"><p>“数据是罗盘，创意是风帆。”</p></div>
+                    <div class="quote-post"><p>“连接品牌与用户，讲述真实故事。”</p></div>
+                </div>
+            </div>
+        </section>
+
+<section id="design">
+    <div class="section-header"><h2>DESIGN WORKS</h2></div>
+    
+    <div class="style-block">
+        <div class="style-header">
+            <h4>STYLE 01. 奶油极简风</h4>
+            <p style="font-size: 0.85rem; color: var(--sub-text);">侧重生活方式与餐饮行业。</p>
+        </div>
+        <div class="design-gallery">
+            <div class="design-img-placeholder"></div>
+            <div class="design-img-placeholder"></div>
+            <div class="design-img-placeholder"></div>
+        </div>
+    </div>
+
+    <div class="style-block">
+        <div class="style-header">
+            <h4>STYLE 02. 职场专业风</h4> <p style="font-size: 0.85rem; color: var(--sub-text);">侧重教育、移民及商务类视觉呈现。</p>
+        </div>
+        <div class="design-gallery">
+            <div class="design-img-placeholder"></div>
+            <div class="design-img-placeholder"></div>
+            <div class="design-img-placeholder"></div>
+        </div>
+    </div>
+</section>
+
+        <section id="video">
+            <div class="section-header"><h2>VIDEO WORKS</h2></div>
+            <div class="video-item">
+                <div class="video-box">
+                    <div style="color:white; display:flex; align-items:center; justify-content:center; height:100%;">视频预览区域</div>
+                </div>
+                <div style="border-left: 4px solid var(--accent-color); padding-left: 25px;">
+                    <h3>小红书 VLOG 脚本策划</h3>
+                    <p style="font-size: 0.88rem; color: #666; margin-top: 10px;">全流程参与选题、脚本、拍摄把控，平均互动率提升 40%。</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" style="border:none;">
+            <div class="contact-footer">
+                <h2 style="font-size: 2.5rem; margin-bottom: 15px;">LET'S TALK</h2>
+                <a href="mailto:yourname@email.com" class="contact-btn">发送邮件</a>
+                <a href="#" class="contact-btn" style="background:var(--main-text); color:white;">LinkedIn 领英</a>
+            </div>
+        </section>
+
+    </div> <a href="#" class="top-btn">↑</a>
+
+</body>
+</html>
