@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio | 运营创意作品集</title>
+    <style>
+        :root {
+            --bg-color: #FFFDFB;       /* 米白背景 */
+            --main-text: #2E2E2E;      /* 主文字 */
+            --sub-text: #8A8A8A;       /* 次文字 */
+            --primary-color: #F3A6A0;  /* 杏粉主色 */
+            --accent-color: #FFD6D2;   /* 点缀色 */
+            --glass: rgba(255, 255, 255, 0.85);
+            --card-shadow: 0 10px 20px rgba(243, 166, 160, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        body { font-family: "PingFang SC", "Microsoft YaHei", sans-serif; background-color: var(--bg-color); color: var(--main-text); line-height: 1.6; }
+
+        /* 导航栏 */
+        nav {
+            padding: 1.2rem 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            position: fixed; top: 0; width: 100%;
+            background: var(--glass); backdrop-filter: blur(10px);
+            z-index: 1000; border-bottom: 1px solid rgba(243, 166, 160, 0.2);
+        }
+        .logo { font-weight: 900; color: var(--primary-color); letter-spacing: 1px; }
+        .nav-links a { text-decoration: none; color: var(--main-text); margin-left: 20px; font-size: 0.9rem; font-weight: 500; transition: 0.3s; }
+        .nav-links a:hover { color: var(--primary-color); }
+
+        /* 核心布局容器 */
+        .container { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            padding: 0 40px; 
+            width: 100%;
+        }
+
+        section { padding: 100px 0; border-bottom: 1px solid rgba(0,0,0,0.03); width: 100%; clear: both; }
+        .section-header { margin-bottom: 50px; }
+        .section-header h2 { font-size: 2.2rem; position: relative; display: inline-block; }
+        .section-header h2::after { content: ''; position: absolute; bottom: -8px; left: 0; width: 40px; height: 4px; background: var(--primary-color); border-radius: 2px; }
+
+        /* 关于我 Hero */
+        .about-hero {
+            position: relative; min-height: 85vh; display: flex; align-items: center;
+            background: linear-gradient(rgba(255,253,251,0.6), rgba(255,253,251,0.6)), 
+                        url('https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?auto=format&fit=crop&q=80&w=2000');
+            background-size: cover; background-position: center; background-attachment: fixed;
+            padding-top: 80px;
+        }
+        .about-card {
+            background: var(--glass); padding: 45px; border-radius: 30px;
+            max-width: 950px; display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+            margin: 0 auto;
+        }
+        .photo-stack { display: flex; gap: 12px; margin-bottom: 25px; }
+        .photo-stack img { width: 90px; height: 120px; border-radius: 12px; object-fit: cover; border: 3px solid #fff; box-shadow: 0 5px 10px rgba(0,0,0,0.1); }
+
+        /* 文案 3x3 网格 */
+        .copy-grid {
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 30px; 
+            width: 100%;
+        }
+        .copy-card {
+            background: #fff; border-radius: 18px; overflow: hidden; border: 1px solid #f2f2f2; transition: 0.3s;
+            display: flex; flex-direction: column;
+        }
+        .copy-card:hover { transform: translateY(-5px); box-shadow: var(--card-shadow); }
+        .copy-img-container {
+            width: 100%; height: 420px;
+            overflow-y: auto; overflow-x: hidden;
+            background: #f9f9f9; cursor: ns-resize;
+        }
+        .copy-img-container::-webkit-scrollbar { width: 4px; }
+        .copy-img-container::-webkit-scrollbar-thumb { background: var(--accent-color); border-radius: 10px; }
+        .copy-img { width: 100%; height: auto; display: block; }
+        .copy-info { padding: 18px; }
+        .tag { font-size: 0.75rem; color: var(--primary-color); font-weight: 700; margin-bottom: 8px; display: block; }
+
+        /* --- Instagram 模块整体布局 --- */
+        .insta-module-wrapper { width: 100%; margin: 60px 0; clear: both; }
+        .insta-module-title { font-size: 1.1rem; border-left: 4px solid var(--primary-color); padding-left: 15px; margin-bottom: 25px; }
+        .insta-custom-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
+
+        .insta-text-mockup {
+            background: #fff; border: 1px solid #efefef; border-radius: 12px;
+            display: flex; flex-direction: column; height: 320px; text-align: left; transition: 0.3s;
+        }
+        .insta-text-mockup:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.05); }
+        .mockup-user-bar { padding: 10px 12px; display: flex; align-items: center; gap: 8px; }
+        .user-avatar-placeholder { 
+            width: 24px; height: 24px; border-radius: 50%; 
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); 
+        }
+        .user-name-text { font-size: 0.75rem; font-weight: 700; color: #262626; }
+        .mockup-action-icons { padding: 10px 12px 5px; display: flex; gap: 12px; font-size: 1rem; }
+        .mockup-caption-box { padding: 0 12px 15px; font-size: 0.78rem; line-height: 1.5; color: #262626; overflow-y: auto; flex-grow: 1; }
+        .mockup-caption-box::-webkit-scrollbar { width: 3px; }
+        .mockup-caption-box::-webkit-scrollbar-thumb { background: #eee; border-radius: 10px; }
+        .mockup-caption-box strong { font-weight: 700; margin-right: 4px; }
+        .mockup-tags { color: #00376b; margin-top: 5px; display: block; }
+
+        /* 脚本卡片 */
+        .script-card { background: #fdfaf7; border: 1px dashed var(--primary-color); }
+        .script-content { font-size: 0.85rem; color: var(--sub-text); line-height: 1.8; margin-top: 10px; padding: 15px; background: #fff; border-radius: 10px; }
+
+        /* 视频网格布局 (竖屏) */
+        .video-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; width: 100%; }
+        .video-card { display: flex; flex-direction: column; gap: 15px; }
+        .video-box { width: 100%; aspect-ratio: 9 / 16; background: #000; border-radius: 20px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
+        .video-info-box { padding: 15px; background: rgba(243, 166, 160, 0.05); border-radius: 12px; border: 1px solid rgba(243, 166, 160, 0.15); }
+        .video-info-box h4 { font-size: 1rem; color: var(--primary-color); margin-bottom: 5px; }
+        .video-info-box p { font-size: 0.8rem; color: var(--sub-text); line-height: 1.4; }
+
+        /* 设计展示风格间距 */
+        .style-block { margin-bottom: 60px; }
+        .style-block:last-child { margin-bottom: 0; }
+        .style-header { border-left: 5px solid var(--primary-color); padding-left: 20px; margin-bottom: 25px; }
+        .design-gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+        /* 设计展示图片的容器 - 设为 3:4 比例 */
+.design-img-container {
+    aspect-ratio: 3 / 4; 
+    background: #eee; 
+    border-radius: 12px;
+    overflow: hidden; /* 确保图片超出部分被裁切，不影响圆角 */
+    border: 1px solid #f0f0f0;
+}
+
+.design-img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 核心：确保图片填满容器且不变形 */
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.design-img-container img:hover {
+    transform: scale(1.05); /* 鼠标悬停微放大效果 */
+}
+
+        /* 灵感墙 */
+        .inspiration-wall { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 25px; }
+        .quote-post { background: #fff; padding: 20px; border-radius: 8px; border: 1px solid #eee; box-shadow: 4px 4px 0px var(--accent-color); font-size: 0.9rem; }
+
+        /* 品牌案例深耕样式 */
+        .brand-group { margin-bottom: 80px; padding: 30px; background: rgba(243, 166, 160, 0.03); border-radius: 25px; }
+        .brand-info-header { margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid var(--accent-color); }
+        .brand-main-name { font-size: 1.2rem; font-weight: 700; color: var(--primary-color); display: block; letter-spacing: 1px; }
+        .brand-main-desc { font-size: 0.95rem; color: var(--main-text); margin-top: 8px; max-width: 800px; line-height: 1.6; }
+        .brand-case-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .brand-case-item { background: #fff; border-radius: 15px; overflow: hidden; border: 1px solid #f0f0f0; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+        .brand-case-scroll { width: 100%; height: 400px; overflow-y: auto; cursor: ns-resize; }
+        .brand-case-scroll img { width: 100%; height: auto; display: block; }
+
+        /* 页脚与响应式 */
+        .contact-footer { background: var(--primary-color); border-radius: 50px; padding: 80px 40px; text-align: center; color: white; margin-bottom: 40px; }
+        .contact-btn { display: inline-block; padding: 12px 35px; background: white; color: var(--primary-color); text-decoration: none; border-radius: 30px; font-weight: bold; margin: 10px; }
+        .top-btn { position: fixed; bottom: 30px; right: 30px; width: 45px; height: 45px; background: var(--primary-color); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; z-index: 999; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 0 20px; }
+            .copy-grid, .brand-case-grid, .video-grid, .design-gallery { grid-template-columns: 1fr; }
+            .insta-custom-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">PORTFOLIO.</div>
+        <div class="nav-links">
+            <a href="#about">About Me</a>
+            <a href="#copy">Copywriting</a>
+            <a href="#design">Design</a>
+            <a href="#video">Video</a>
+            <a href="#contact">Contact</a>
+
+        </div>
+    </nav>
+
+    <header id="about" class="about-hero">
+        <div class="container">
+            <div class="about-card">
+                <div>
+
+                    <h1>Hi！This is Yutian(Annie)</h1>
+                    <p style="margin: 15px 0; color: #555;">Digital marketing is not just about traffic — it is about connection. Between data and storytelling, strategy and execution, insight and growth.</p>
+                    <p style="color: #666; font-size: 0.95rem;">
+                        I’m a <strong>content creator and digital marketer</strong> who turns data into stories that move people — and metrics.
+                        Across 300+ cross-industry content projects, I’ve helped brands build visibility, engagement, and trust in competitive markets.
+                        <br><br>
+                        My work on Xiaohongshu has generated high-performing posts with 600+ organic likes, while long-form WeChat content reached over 6,000 reads, supporting brand awareness and lead generation in Chinese-speaking markets.
+                        From SEO optimization to social content strategy, I focus on making content and data work together — not in silos.
+                        <br><br>
+                        Looking ahead, I aim to go beyond execution and deepen my work in data insight, strategic planning, and full-funnel, omnichannel marketing.
+                        <br><br>
+                        If I had to define myself: half storyteller, half analyst.
+                        Creativity in one hand, logic in the other.
+                        </p>
+                </div>
+                <div style="background: rgba(243,166,160,0.05); padding: 25px; border-radius: 20px;">
+                    <h4 style="color: var(--primary-color); margin-bottom: 12px;">SKILLS</h4>
+                    <ul style="list-style: none; font-size: 0.88rem; line-height: 1.8; color: #666;">
+                         <li>✔ <strong>Programming:</strong> HTML, CSS, Python, Wix</li>
+                        <li>✔ <strong>Technical:</strong> Video Editing, Web Design, Content Strategy & Creation, Graphic Design, Adobe Creative Suite, Online Advertising, Web Analytics, SEO, SEM, Google Ads, Brand Storytelling</li>
+                        <li>✔ <strong>Languages:</strong> English (Fluent), Mandarin (Native), Cantonese (Limited Working Proficiency)</li>
+                        <li>✔ <strong>Platform:</strong> RED (Xiaohongshu), Instagram, Linkedin, Wechat</li>
+                        <div style="margin: 20px 0;">
+                    <span style="font-size: 0.8rem; background: var(--accent-color); padding: 4px 12px; border-radius: 20px; margin-right: 5px;">Content Creation</span>
+                    <span style="font-size: 0.8rem; background: var(--accent-color); padding: 4px 12px; border-radius: 20px; margin-right: 5px;">Digital Marketing</span>
+                              <br><br>
+                        <span style="font-size: 0.8rem; background: var(--accent-color); padding: 4px 12px; border-radius: 20px;">Brand Storytelling</span>
+                    <span style="font-size: 0.8rem; background: var(--accent-color); padding: 4px 12px; border-radius: 20px;"> Data Analysis</span>
+                </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <section id="copy">
+            <div class="section-header">
+                <h2>COPYWRITING</h2>
+                <p style="color: var(--sub-text); margin-top: 10px;">Cross-industry Content Strategy    <br><br>
+                    I approach copywriting from a competitive insight mindset — grounding ideas in market research, leveraging cultural trends, and translating audience pain points into scroll-stopping hooks.<br>
+                    My goal is not just to create content, but to help brands stay relevant, recognizable, and consistently engaging across fast-moving digital platforms.</p>
+            </div>
+
+            <div class="copy-grid">
+    <div class="copy-card">
+        <div class="copy-img-container"><img src="医美护肤安利.PNG" class="copy-img"></div>
+        <div class="copy-info">
+            <span class="tag">Xiaohongshu | Medical Aesthetics</span>
+            <strong>Product Seeding & Campaign Promotion</strong>
+            <p>
+            • Platform-native tone paired with emotionally driven storytelling.<br>
+            • Combines immersive product seeding, value-based pricing hooks (clear cost comparisons), and lifestyle scenarios aligned with target personas.<br>
+            • Reinforced with brand credibility and a clear conversion-oriented CTA.
+            </p>
+        </div>
+    </div>
+
+            <div class="copy-card">
+                <div class="copy-img-container"><img src="医美护肤身材管理.PNG" class="copy-img"></div>
+                <div class="copy-info">
+                    <span class="tag">Xiaohongshu | Medical Aesthetics</span>
+                        <strong>Body Contouring Campaign</strong>
+                        <p>
+                        • Built around the “effortless results” mindset.<br>
+                        • Uses sharp pain-point hooks, simplified explanations to build trust, and - - clearly positioned differentiators.<br>
+                        • Ends with a low-friction lead capture CTA to drive inquiries.
+                        </p>
+                </div>
+            </div>
+
+            <div class="copy-card">
+                <div class="copy-img-container"><img src="医美护肤spa1.PNG" class="copy-img"></div>
+                <div class="copy-info">
+                    <span class="tag">Xiaohongshu | Medical Aesthetics</span>
+                        <strong>Brand Positioning & Emotional Marketing</strong>
+                        <p>
+                        • Focuses on emotional value creation and psychological anchoring.<br>
+                        • Blends brand philosophy into relatable self-image narratives, using emotion-driven storytelling to trigger resonance and conversion.
+                        </p>
+                </div>
+            </div>
+
+            <div class="copy-card">
+                <div class="copy-img-container"><img src="教育人设故事.PNG" class="copy-img"></div>
+                <div class="copy-info">
+                    <span class="tag">Xiaohongshu | Education</span>
+                        <strong>Student Persona & IP Building</strong>
+                        <p>
+                         • Outcome-driven hooks paired with authentic storytelling.<br>
+                         • Delivers practical insights while subtly integrating brand authority.<br>
+                         • Designed to build long-term trust and guide audiences toward conversion without hard selling.
+                        </p>
+                </div>
+            </div>
+
+            <div class="copy-card">
+                <div class="copy-img-container"><img src="教育私立学校.PNG" class="copy-img"></div>
+                <div class="copy-info">
+                    <span class="tag">Xiaohongshu | Education</span>
+                        <strong>Private School Program Messaging</strong>
+                        <p>
+                         • Leverages authoritative endorsements to establish credibility.<br>
+                         • Transforms complex curriculum advantages into clear, visualized selling points.<br>
+                         • Highlights differentiation to shorten the decision-making journey for parents.
+                        </p>
+
+                </div>
+            </div>
+
+            <div class="copy-card">
+                <div class="copy-img-container"><img src="教育移民项目.PNG" class="copy-img"></div>
+                <div class="copy-info">
+                    <span class="tag">Xiaohongshu | Immigration & Education</span>
+                        <strong>Lead Generation for Immigration Programs</strong>
+                        <p>
+                        • Uses policy-driven opportunity hooks to capture attention.<br>
+                        • Reduces cognitive load by presenting requirements upfront, while reinforcing brand reliability and trust.<br>
+                        • Optimized for high-intent lead conversion.
+                        </p>
+                </div>
+            </div>
+
+            <div class="copy-card">
+                <div class="copy-img-container"><img src="生活服务diy.PNG" class="copy-img"></div>
+                <div class="copy-info">
+                    <span class="tag">Xiaohongshu | Lifestyle</span>
+                        <strong>DIY Event Promotion</strong>
+                        <p>
+                        • Capitalizes on trending cultural moments.<br>
+                        • Breaks down the experience flow to remove participation anxiety, while building vivid use cases.<br>
+                        • Ends with an action-driven CTA to boost attendance.
+                        </p>
+                </div>
+            </div>
+
+            <div class="copy-card">
+                <div class="copy-img-container"><img src="活动宣传.PNG" class="copy-img"></div>
+                <div class="copy-info">
+                    <span class="tag">Xiaohongshu | Event Marketing</span>
+                        <strong>Brand Event Pre-Launch Campaign</strong>
+                        <p>
+                        • Builds momentum through social proof and media-style credibility.<br>
+                        • Centers messaging on audience benefits while reinforcing brand expertise.<br>
+                        • Designed to convert awareness into registrations.
+                        </p>
+
+                </div>
+            </div>
+
+            <div class="copy-card">
+                <div class="copy-img-container"><img src="生活服务618.PNG" class="copy-img"></div>
+                <div class="copy-info">
+                    <span class="tag">Xiaohongshu | Promotional Campaign</span>
+                        <strong>618 Sales Moment Activation</strong>
+                        <p>
+                        • Creates urgency through scarcity-driven messaging.<br>
+                        • Highlights core promotional value with clarity and speed.<br>
+                        • Optimized to maximize conversions during peak campaign windows.
+                        </p>
+                </div>
+            </div>
+        </div>
+
+            <div class="brand-section" style="margin-top: 60px;">
+                <h3 class="insta-module-title" style="margin-bottom: 40px;">BRAND CASE STUDY</h3>
+                <div class="brand-group">
+                   <div class="brand-info-header">
+                        <span class="brand-main-name">T&T Supermarket</span>
+                        <p class="brand-main-desc" style="font-weight: 500; color: var(--main-text); margin-bottom: 15px;">
+                            Localized Content Strategy X Scenario-based Storytelling
+                        </p>
+                        <ul style="font-size: 0.9rem; color: var(--sub-text); list-style: none; line-height: 1.8;">
+                            <li>🤝 <strong>Cross-Brand Collaboration:</strong>
+                            Leveraged the new store opening as a growth moment, moving beyond single-brand promotion.
+                            By partnering with local businesses to create a “benefit ecosystem,” the campaign increased perceived membership value and drove in-store foot traffic through value exchange.
+                            </li>
+
+                            <li> 🚀 <strong>Hero Product Activation:</strong>
+                            Positioned the ready-to-eat “Crispy Whole Chicken” as a social media hero product.
+                            By combining cultural cues (traditional Chinese preparation) with high-impact sensory selling points ($12 whole chicken, juicy interior, crispy texture), everyday food was transformed into a shareable, high-engagement content topic.
+                            </li>
+
+                           <li> 🛒 <strong>Service as a Scenario:</strong>
+                            Identified real-time customer pain points such as weather, heavy grocery loads, and long checkout lines.
+                            Reframed the “Free Delivery Over $59” offer as a one-stop, hassle-free grocery solution, reducing online decision friction and increasing order conversion.
+                            </li>
+        
+                        </ul>
+                    </div>
+                    <div class="brand-case-grid">
+                        <div class="brand-case-item"><div class="brand-case-scroll"><img src="生活服务开业宣传.PNG"></div></div>
+                        <div class="brand-case-item"><div class="brand-case-scroll"><img src="大统华炸鸡.PNG"></div></div>
+                        <div class="brand-case-item"><div class="brand-case-scroll"><img src="大统华配送.PNG"></div></div>
+                    </div>
+                </div>
+                <div class="brand-group">
+                    <div class="brand-info-header">
+                        <span class="brand-main-name">VIEWMAX Windows & Doors</span>
+                        <p class="brand-main-desc" style="font-weight: 500; color: var(--main-text); margin-bottom: 15px;">
+                            Emotion-led Storytelling x Conflict-driven Narratives
+                        </p>
+                        <ul style="font-size: 0.9rem; color: var(--sub-text); list-style: none; line-height: 1.8;">
+                            <li> 🏡 <strong>Lifestyle Scenario Positioning:</strong>
+                                Embedded products into aspirational, high-net-worth lifestyle scenarios such as backyard living upgrades and premium home renovations.
+                                Paired with government rebate incentives (e.g. $325 rebate), the strategy shortened the path from aesthetic concern to purchase decision. </li>
+
+                            <li> 💡 <strong>Education-Driven Selling:</strong>
+                                Moved away from hard-selling by breaking down technical concepts such as laminated glass, PVB, and SGP through expert-led explanations.
+                                Real-life use cases lowered the knowledge barrier and positioned the brand as a trusted authority rather than a sales-driven vendor.
+                                </li>
+
+                            <li> 🛡️ <strong>Conflict-Based Pain Point Amplification:</strong>
+                                Tied product messaging to local safety concerns in the Toronto area, including break-ins and property crime.
+                                High-impact visuals (forced-entry demonstrations) reframed home renovation from a “nice-to-have” upgrade into a must-have security solution.
+                                </li>
+                            
+                        </ul>
+                    </div>
+                    <div class="brand-case-grid">
+                        <div class="brand-case-item"><div class="brand-case-scroll"><img src="生活服务热点和产品.PNG"></div></div>
+                        <div class="brand-case-item"><div class="brand-case-scroll"><img src="生活服务真实事件.PNG"></div></div>
+                        <div class="brand-case-item"><div class="brand-case-scroll"><img src="生活服务案例分享.PNG"></div></div>
+                    </div>
+                </div>
+            </div>
+                
+            <div class="insta-module-wrapper">
+                <h3 class="insta-module-title">Instagram 文案策划展示</h3>
+                <div class="insta-custom-grid">
+                    <div class="insta-text-mockup">
+                        <div class="mockup-user-bar"><div class="user-avatar-placeholder"></div><span class="user-name-text">Account Name</span></div>
+                        <div class="mockup-action-icons"><span>♡</span> <span>💬</span> <span>✈️</span></div>
+                        <div class="mockup-caption-box">
+                            Can’t decide what to eat? Yeah… same 😵‍💫  
+                            Choosing at Yang’s Dumplings is basically a daily struggle.
+                        <br><br>
+                        Do you go for:<br>
+                        🥟 Juicy Pork Soup Dumplings? <br>
+                        🧀 The rich Cheese & Beef Dumplings? <br>
+                        🍤 Or our signature Shrimp Soup Dumplings that everyone talks about?
+                        <br><br>
+                        Good news — you don’t actually have to choose 😉 <br>
+                        Meet our newest game changer: Yang’s Fried Dumplings. Crispy, comforting, and decision-proof.
+                        <br><br>
+                        Stop asking what to eat today! Let's enjoy Fried Dumplings together 😘.
+                        <br><br>
+                        🏠: Yang’s Dumpling 
+                        📍: 6028 Yonge St, North York, ON M2M 3W5
+
+                        <span class="mockup-tags">#yangsdumpling #yangsdumpling #xiaoyangshengjian #toronto #torontofoodie #torontoeats #torontofoodflogger #tofoodie #torontolife #torontofoodies #torontofood #tastetoronto #toeats #yyzeats #blogto #yyzfood #tofoodies #shanghaicuisine</span></div>
+                    </div>
+                    <div class="insta-text-mockup">
+                        <div class="mockup-user-bar"><div class="user-avatar-placeholder"></div><span class="user-name-text">Account Name</span></div>
+                        <div class="mockup-action-icons"><span>♡</span> <span>💬</span> <span>✈️</span></div>
+                        <div class="mockup-caption-box">Did you hear?  The wait is over, we're restocked! 🤩
+                        <br><br>
+                        Our most-loved safety keychains are officially restocked❗️❗️ Sleek, powerful, and designed to keep peace of mind within reach.
+                        <br><br>
+                        🛍️Thinking about grabbing one?  DM us to check availability and explore more styles.
+                        <br><br>
+                        💗You + @Bsafekc = the perfect match.
+                        <br><br>
+                        <span class="mockup-tags">#keychain #selfdefensekeychain #safetykeychain</span>
+                        </div>
+                    </div>
+                    <div class="insta-text-mockup">
+                        <div class="mockup-user-bar"><div class="user-avatar-placeholder"></div><span class="user-name-text">Account Name</span></div>
+                        <div class="mockup-action-icons"><span>♡</span> <span>💬</span> <span>✈️</span></div>
+                        <div class="mockup-caption-box">🍂 October feels different — calmer, softer, a little magical.
+                        <br><br>
+                        Our Safety Keychain Sets & Acrylic Charms are restocked and ready to go.🔥
+                        Designed with intention, carried with confidence.
+                        <br><br>
+                        🤔️ Think of it as that one small thing you keep with you —  
+                        quietly reassuring, always there.
+                        <br><br>
+                        Restock is live. Come check availability before they’re gone again ✨
+
+                       </div>
+                    </div>
+                    <div class="insta-text-mockup">
+                        <div class="mockup-user-bar"><div class="user-avatar-placeholder"></div><span class="user-name-text">Account Name</span></div>
+                        <div class="mockup-action-icons"><span>♡</span> <span>💬</span> <span>✈️</span></div>
+                        <div class="mockup-caption-box">Gandhi’s message of non-violence still matters — maybe now more than ever.
+                            <br><br>
+                            At Bsafe, peace of mind isn’t just about protection.💗
+                            It’s about creating space for calm, freedom, and reassurance in everyday life.
+                            <br><br>
+                            🌍 Today, on the International Day of Non-Violence, we stand for safety without fear, strength without harm, and confidence without aggression.
+                            <br><br>
+                            Because a safer world starts with how we choose to care for one another 🕊️
+                            <br><br>
+                            <span class="mockup-tags">
+                            #PeaceOfMind #NonViolence #BrandValues
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 50px;">
+                <h3 class="insta-module-title">短视频脚本展示</h3>
+                <div class="copy-grid">
+                    <div class="copy-card script-card"><div class="copy-info"><span class="tag">Script | Healthcare ｜ Ambrotose Life</span><div class="script-content">
+                        没空健身，不想体检，身体却很好？
+
+                        压力与年龄无关，但健康与您有关
+                        <br><br>
+
+                        Ambrotose Life，一键开启健康保卫战
+
+                        多种强效天然成分，营养补充一步到位
+
+                        提高专注度，增加记忆力，改善免疫力
+
+                        促进肠胃健康，缓解焦虑心情
+
+                        精神好，气色好，生活更美好
+                        <br><br>
+
+                        “养生”从我做起，“健康”全在调理
+
+                        Ambrotose Life，懂营养，懂健康，更懂你的身体
+               <hr>
+                    You’re busy.  
+                    No time for the gym.  
+                    Health checkups keep getting pushed back.
+                    <br><br>
+                    But your body still deserves support.
+                    <br><br>
+                    Ambrotose Life is designed for people who want to take care of their health — without overcomplicating it.
+                    <br><br>
+                    Powered by a blend of naturally sourced ingredients, it supports: <br>
+                    • focus and mental clarity  <br> 
+                    • memory and cognitive performance <br>  
+                    • immune function  <br> 
+                    • gut health and digestion  <br> 
+                    • stress balance and emotional well-being 
+                    <br><br>
+                    When your body feels supported, everything else feels easier — energy, mood, and daily life.
+                    <br><br>
+                    Wellness doesn’t have to be extreme.  
+                    It just needs to be consistent.
+                    <br><br>
+                    Ambrotose Life — nutrition you can trust, made for real life.
+                    </div></div></div>
+                <div class="copy-card script-card"><div class="copy-info"><span class="tag">Script | Healthcare（Brand Story / Trust）</span><div class="script-content">自1993年成立以来，Mannatech 已在健康美容领域深耕三十余载。我们秉承先进的“糖营养”科学理念，专注研发高品质营养补充剂，始终致力于为人们提供可信赖的健康产品。  <br><br>
+
+                我们深信，真正的健康源于科学与关爱的结合。因此，我们不仅提供产品，更希望助力每一个人及其家庭迈向健康、充实的生活。在 Mannatech，我们注重联结与分享，鼓励在亲密关系中共同成长，让健康成为家庭的纽带。  <br><br>
+                    
+                依托受DSA保护的独立销售联盟模式，我们为每位伙伴提供公平的发展机会与可持续的成功路径。在此商业模式下，独立销售人员可获得充分支持，开拓属于自己的事业。
+                    <br><br>
+                    Mannatech 诚挚邀请您，与我们一同走进健康与理想生活的全新境界。
+                        <hr>
+                    Founded in 1993, Mannatech has spent over 30 years focused on health and wellness innovation.
+                    <br><br>
+                    Rooted in glyconutrient science, we develop high-quality nutritional supplements with one goal in mind — supporting long-term well-being through science-backed care.
+                    <br><br>
+                    At Mannatech, we believe true health goes beyond products.
+                    It’s about connection, education, and empowering individuals and families to live healthier, more fulfilling lives together.
+                    <br><br>
+                    Through our DSA-protected independent business model, we provide partners with a fair, transparent pathway to grow their own businesses — supported by community, training, and shared values.
+                    <br><br>
+                    Mannatech isn’t just about wellness.
+                    It’s about building a healthier future — together.
+                    </div></div></div>
+                    
+                <div class="copy-card script-card"><div class="copy-info"><span class="tag">Script | Beauty ｜ Medical Aesthetics</span><div class="script-content">
+                    姐妹们快来看啊，这位姐妹打完轮廓固定后竟变这样！
+                    先看看她有没有脸僵，到底她还能不能做表情？
+                    咦，怎么感觉一点都没有馒化？
+                      <br><br>
+
+                    而且看起来还那么自然！比以前精致了好多啊~
+                      <br><br>
+
+                    以前的大眼袋、深深的法令纹完全消失了
+                      <br><br>
+
+                    面部现在立体又精致、轮廓清晰又紧致！
+                    <br><br>
+
+                    猜猜她到底打了哪些部位，下方告诉我们吧~
+                    <hr>
+                    Let’s talk about one of the biggest concerns in aesthetic treatments:
+                    “Will my face look stiff?”
+                    <br><br>
+                    After contour enhancement, the first thing people want to know isn’t the procedure —
+                    it’s whether they can still smile, laugh, and express themselves naturally.
+                    <br><br>
+                    And as you can see, the results speak for themselves.
+                    No stiffness. No overfilled look.
+                    Just a more refined, balanced version of her natural features.
+                    <br><br>
+                    Under-eye bags appear smoother.  
+                    Nasolabial lines are visibly softened.  
+                    Facial contours look more defined — yet still natural.
+                    <br><br>
+                    The goal isn’t to look different.
+                    It’s to look refreshed, confident, and like yourself — on a really good day.
+                    <br><br>
+                    Which areas do you think were treated?
+                    Let us know in the comments.
+                    </div>
+                    </div></div>
+                </div>
+            </div>
+
+            <div style="margin-top: 50px;display: none;">
+                <h3 class="insta-module-title">灵感墙</h3>
+                <div class="inspiration-wall">
+                    <div class="quote-post"><p>“运营的本质是人与人之间的深度连接。”</p></div>
+                    <div class="quote-post"><p>“秉持以“木“为基，贯穿大自然的“绿”，交织出独特的生态之美🌿。”</p></div>
+                    <div class="quote-post"><p>“数据是罗盘，创意是风帆。”</p></div>
+                    <div class="quote-post"><p>“连接品牌与用户，讲述真实故事。”</p></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="design">
+    <div class="section-header"><h2>DESIGN WORKS</h2></div>
+    
+    <div class="style-block">
+        <div class="style-header">
+            <h4>STYLE 01. Brand-Led Visual Direction</h4>
+            <p style="color: var(--sub-text); font-size: 0.9rem; line-height: 1.8; margin-top: 10px;">
+                From Michelin-referenced fine dining visuals that emphasize white space and premium cues, to lifestyle content designed to capture trend-driven attention among young female audiences, and education-focused materials that prioritize clarity and rational value delivery — I approach design with a “cover-first mindset.”
+                <br><br>
+                Every visual is treated as a first impression.
+                Beyond aesthetics, the goal is to align imagery and copy to instantly signal brand positioning and attract the right audience.
+                </p>
+        </div>
+        <div class="design-gallery">
+            <div class="design-img-container"><img src="商业.jpeg" alt="Design 1"></div>
+            <div class="design-img-container"><img src="产品展示多巴胺.jpg" alt="Design 2"></div>
+            <div class="design-img-container"><img src="school.JPG" alt="Design 3"></div>
+        </div>
+    </div>
+
+    <div class="style-block">
+        <div class="style-header">
+            <h4>STYLE 02. Internet-Native Visuals</h4>
+                <p style="color: var(--sub-text); font-size: 0.92rem; line-height: 1.8; margin-top: 10px;">
+                At the core of this style is attention capture through contrast.
+                By leveraging bold visual tension, oversized typography, and high-contrast color palettes, the design is built to interrupt scrolling behavior within the first 0.1 second.
+                <br><br>
+                By integrating trending formats, meme-aware layouts, and social-first composition,
+                brand content shifts from traditional ad creatives into highly shareable, platform-native assets.
+                </p>
+
+        </div>
+        <div class="design-gallery">
+            <div class="design-img-container"><img src="web mao.jpeg" alt="Design 4"></div>
+            <div class="design-img-container"><img src="现场.jpeg" alt="Design 5"></div>
+            <div class="design-img-container"><img src="IMG_7521.JPG" alt="Design 6"></div>
+        </div>
+    </div>
+</section>
+
+        <section id="video">
+            <div class="section-header"><h2>VIDEO WORKS</h2></div>
+            <div class="video-grid">
+                <div class="video-card">
+                    <div class="video-box"><video controls width="100%" height="100%" style="object-fit: cover; display: block;"><source src="Claw World.mp4" type="video/mp4"></video></div>
+                    <div class="video-info-box"><h4>Claw World</h4>
+                        <strong>Special Offer + Limited-Time + Halloween</strong>
+                        <br><br>
+                        <p>
+                        Fast-paced editing with rapid 0.5-second cuts and POV-style shots creates a sense of urgency and excitement, aligning with holiday-driven shopping behavior.
+                        </p>
+                        <br><br>
+                        <p>
+                        Key value propositions and time-sensitive discounts are communicated early and clearly, reducing friction and accelerating the path from interest to action.
+                        </p>
+                        <br><br>
+                        <p>
+                        Close-up shots of tactile, stress-relief toys tap into platform users’ preference for visually satisfying and calming content, boosting watch time and engagement.
+                        </p>
+                    </div>
+                </div>
+                <div class="video-card">
+                    <div class="video-box"><video controls width="100%" height="100%" style="object-fit: cover; display: block;"><source src="Bsafe.mp4" type="video/mp4"></video></div>
+                    <div class="video-info-box"><h4>Bsafe Keychain</h4>
+                        <strong>“Pack With Me” Format</strong>
+                            <br><br>
+                            <p>
+                            The video opens with a clear visual hook, showcasing the product’s aesthetic appeal to immediately capture attention from a young, female audience.
+                            </p>
+                            <br><br>
+                            <p>
+                            Behind-the-scenes moments — such as pre-shipment quality checks — are intentionally highlighted to humanize the brand and transform a routine QA process into comforting, trust-building content.
+                            </p>
+                            <br><br>
+                            <p>
+                            Reusable and eco-conscious packaging is featured to reinforce the brand’s sustainability values, positioning Bsafe as thoughtful, responsible, and customer-first.
+                            </p>
+                            <br><br>
+                            <p>
+                            The closing interactive rating CTA is designed to spark comments and increase engagement without feeling overly promotional.
+                            </p>
+                            </div>
+                    </div>
+                <div class="video-card">
+                    <div class="video-box"><video controls width="100%" height="100%" style="object-fit: cover; display: block;"><source src="金字塔轮廓固定.mp4" type="video/mp4"></video></div>
+                    <div class="video-info-box"><h4>Beauty Brand</h4>
+                        <strong>Results-Driven, Trust-Focused Storytelling</strong>
+                            <br><br>
+                            <p>
+                            The core strategy is to reduce aesthetic anxiety through realism.
+                            By showing natural facial expressions three months post-treatment, the video directly addresses concerns around stiffness and overcorrection.
+                            </p>
+                            <br><br>
+                            <p>
+                            On-screen text highlights common pain points — under-eye bags, nasolabial folds, facial volume loss — mirroring what users notice when looking in the mirror, which strengthens emotional relevance.
+                            </p>
+                            <br><br>
+                            <p>
+                            Expert credibility is reinforced through procedural details and a side-profile comparison two weeks post-treatment, offering transparent, visual proof rather than exaggerated claims.
+                            </p>
+                            <br><br>
+                            <p>
+                            The transformation is positioned not as a cosmetic upgrade, but as an investment in confidence, well-being, and overall quality of life.
+                            </p>
+
+                      </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" style="border:none;">
+            <div class="contact-footer">
+                <h2 style="font-size: 2.5rem; margin-bottom: 15px;">LET'S TALK</h2>
+                <a href="mailto:anniez020614@gmail.com" class="contact-btn">Email Me</a>
+                <a href="https://www.linkedin.com/in/yutian-zhang-390207231"
+                   class="contact-btn"
+                   style="background:var(--main-text); color:white;"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                   Connect on LinkedIn
+                </a>
+            </div>
+</section>
+
+
+
+    </div> <a href="#" class="top-btn">↑</a>
+</body>
+</html>
